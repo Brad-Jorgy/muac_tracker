@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'addChild.dart';
 
-void main() {
+import 'DataBase/database_helper.dart';
+import 'Screens/add_child.dart';
+
+final dbHelper = DatabaseHelper();
+
+Future<void> main() async {
+  await dbHelper.init();
+
   runApp(const MyApp());
 }
 
@@ -19,7 +25,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'MUAC Tracker'),
           routes: {
-        '/addChild': (context) => AddChildScreen(),
+        '/addChild': (context) => const AddChildScreen(),
       },
     );
   }
