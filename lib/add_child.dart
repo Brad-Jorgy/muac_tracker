@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:muac_tracker/child_info.dart';
+import 'package:sqflite/sqflite.dart';
+
+
 
 class AddChildScreen extends StatefulWidget {
+  const AddChildScreen({super.key});
+
   @override
   _AddChildScreenState createState() => _AddChildScreenState();
 }
@@ -12,7 +18,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
       appBar: AppBar(
         backgroundColor: Colors.green,
         centerTitle: true,
-        title: Text('Add Child'),
+        title: const Text('Add Child'),
       ),
       body: Container(
         alignment: Alignment.center,
@@ -28,7 +34,7 @@ class _AddChildScreenState extends State<AddChildScreen> {
             TextFormField(
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
-                labelText: 'Enter childs age in months',
+                labelText: 'Enter childs birthday',
               ),
             ),
             TextFormField(
@@ -50,3 +56,23 @@ class _AddChildScreenState extends State<AddChildScreen> {
     );
   }
 }
+
+
+// Future<void> insertChildInfo(ChildInfo childInfo) async {
+
+//   final db = await database;
+
+//   await db.insert(
+//     'childInfos',
+//     childInfo.toMap(),
+//     conflictAlgorithm: ConflictAlgorithm.replace,
+//   );
+// }
+
+// var kido =  ChildInfo(
+//   id: 0,
+//   name: 'Bob',
+//   birthDate: 5/10/01,
+// );
+
+// await insertChildInfo(kido);
