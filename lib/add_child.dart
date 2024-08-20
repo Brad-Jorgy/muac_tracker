@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muac_tracker/child_info.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -12,6 +11,24 @@ class AddChildScreen extends StatefulWidget {
 }
 
 class _AddChildScreenState extends State<AddChildScreen> {
+
+  late String _childName;
+  late String _childBirthday;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+    void _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _childName = prefs.getString('childName') ?? '';
+      _childBirthday = prefs.getString('childBirthday') ?? '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,22 +47,27 @@ class _AddChildScreenState extends State<AddChildScreen> {
                 border: UnderlineInputBorder(),
                 labelText: 'Enter childs name',
               ),
+              onChanged: (name) {
+                setState(() {
+                  _childName = name;
+                });
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter childs birthday',
               ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter childs MUAC',
-              ),
+              onChanged: (bday) {
+                setState(() {
+                  _childBirthday = bday;
+                });
+              },
             ),
             ElevatedButton(
               onPressed: () {
                 // add code here to save info
+                _saveValue();
                  Navigator.pop(context);
               }, 
               child: const Text('Submit'),
@@ -55,24 +77,9 @@ class _AddChildScreenState extends State<AddChildScreen> {
       ),
     );
   }
+    void _saveValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('childName', _childName);
+    prefs.setString('childBirthday', _childBirthday);
+  }
 }
-
-
-// Future<void> insertChildInfo(ChildInfo childInfo) async {
-
-//   final db = await database;
-
-//   await db.insert(
-//     'childInfos',
-//     childInfo.toMap(),
-//     conflictAlgorithm: ConflictAlgorithm.replace,
-//   );
-// }
-
-// var kido =  ChildInfo(
-//   id: 0,
-//   name: 'Bob',
-//   birthDate: 5/10/01,
-// );
-
-// await insertChildInfo(kido);

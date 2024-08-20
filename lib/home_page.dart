@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -11,11 +12,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  late String _childName;
+
   void _addChild() {
     setState(() {
       Navigator.pushNamed(context, '/addChild');
     });
   }
+
+@override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+    void _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _childName = prefs.getString('childName') ?? '';
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +48,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: _addChild, 
               child: const Text('Add Child'),
+            ),
+            ElevatedButton(
+              onPressed: _addChild,
+              child:  Text(_childName)
             )
           ],
-        ),
+        ), 
       ),
     );
   }
+
 }

@@ -19,6 +19,6 @@ class ChildInfo {
 
   @override
   String toString() {
-    return 'Dog{id: $id, name: $name, birthDate: $birthDate}';
+    return 'Child{id: $id, name: $name, birthDate: $birthDate}';
   }
 }
