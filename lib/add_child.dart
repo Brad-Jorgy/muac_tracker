@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muac_tracker/child_info.dart';
+import 'package:muac_tracker/kids.dart';
+import 'package:muac_tracker/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 
 class AddChildScreen extends StatefulWidget {
@@ -13,22 +15,45 @@ class AddChildScreen extends StatefulWidget {
 
 class _AddChildScreenState extends State<AddChildScreen> {
 
+  SharedPrefs sharedPref = SharedPrefs();
+
+  List<ChildInfo> kidUpLoad = [];
+  List<ChildInfo>  kidDownload = [];
+
+  ChildInfo info = ChildInfo(); 
+
   late String _childName;
   late String _childBirthday;
 
   @override
   void initState() {
     super.initState();
-    _loadPreferences();
+    loadSharedPrefs();
   }
 
-    void _loadPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _childName = prefs.getString('childName') ?? '';
-      _childBirthday = prefs.getString('childBirthday') ?? '';
-    });
+  loadSharedPrefs() async {
+    try {
+      kidDownload = sharedPref.read("kids");
+      // kidDownload = Kids.fromJson(await sharedPref.read("kids")) as Kids;
+
+      // setState(() {
+
+      // });
+    } catch (Excepetion) {
+       return null;  
+    }
   }
+
+  void saveChild(){
+    info.birthDate = _childBirthday;
+    info.name = _childName;
+
+    kidUpLoad.add(info); 
+
+    List<Map<String, dynamic>> jsonList = kidUpLoad.map((info) => info.toJson()).toList();
+
+    sharedPref.save('kids', jsonList);
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +93,10 @@ class _AddChildScreenState extends State<AddChildScreen> {
             ElevatedButton(
               onPressed: () {
                 // add code here to save info
-                _saveValue();
+              //  _saveValue();
+              // setState(() {
+              saveChild();
+              // });
                  Navigator.pop(context);
               }, 
               child: const Text('Submit'),
@@ -78,27 +106,15 @@ class _AddChildScreenState extends State<AddChildScreen> {
       ),
     );
   }
-  void _saveValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var kidsInfo = ChildInfo(name: _childName, birthDate: _childBirthday);
-
-    var kids = [];
-    
-    for (var i = 0; i < kids.length; i++){
-      kids.add(_childName);
-    }
-    
-    prefs.setString('childName', _childName);
-    prefs.setString('childBirthday', _childBirthday);
-
-    Map<String, dynamic> toJson() {
-      return {
-        'name': _childName,
-        'bDay': _childBirthday,
-      };
-    }
-
-  }
 }
  
+
+
+
+ // 1 pull in prefs and check for prefs 
+ // 2 Decode prefs if needed 
+ // 3 set object array to be added too
+ // 4 add new 
+ // 5 encode to json 
+ // 6 save to shard prefs 

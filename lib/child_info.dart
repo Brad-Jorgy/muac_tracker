@@ -1,21 +1,18 @@
+import 'package:flutter/material.dart';
+
 class ChildInfo {
-  final String name;
-  final String birthDate;
+  late String name;
+  late String birthDate; 
 
-  const ChildInfo({
-    required this.name,
-    required this.birthDate,
-  });
+ ChildInfo();
 
-    Map<String, Object?> toMap() {
-    return {
+  ChildInfo.fromJson(Map<String, dynamic> json) 
+     : name = json['name'],
+       birthDate = json['birthDate'];
+
+    Map<String, dynamic> toJson() => {
       'name': name,
       'birthDate': birthDate,
     };
-  }
 
-  @override
-  String toString() {
-    return 'Child{name: $name, birthDate: $birthDate}';
-  }
 }
