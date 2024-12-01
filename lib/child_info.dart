@@ -1,24 +1,18 @@
+import 'package:flutter/material.dart';
+
 class ChildInfo {
-  final int id;
-  final String name;
-  final Set birthDate;
+  late String name;
+  late String birthDate; 
 
-  const ChildInfo({
-    required this.id,
-    required this.name,
-    required this.birthDate,
-  });
+ ChildInfo();
 
-    Map<String, Object?> toMap() {
-    return {
-      'id': id,
+  ChildInfo.fromJson(Map<String, dynamic> json) 
+     : name = json['name'],
+       birthDate = json['birthDate'];
+
+    Map<String, dynamic> toJson() => {
       'name': name,
       'birthDate': birthDate,
     };
-  }
 
-  @override
-  String toString() {
-    return 'Dog{id: $id, name: $name, birthDate: $birthDate}';
-  }
 }
