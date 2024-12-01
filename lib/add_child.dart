@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:muac_tracker/child_info.dart';
-import 'package:muac_tracker/kids.dart';
 import 'package:muac_tracker/shared_prefs.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AddChildScreen extends StatefulWidget {
@@ -33,7 +31,10 @@ class _AddChildScreenState extends State<AddChildScreen> {
 
   loadSharedPrefs() async {
     try {
-      kidDownload = sharedPref.read("kids");
+      String? download = sharedPref.read("kids");
+      kidDownload = decodeItems(download!);
+
+
       // kidDownload = Kids.fromJson(await sharedPref.read("kids")) as Kids;
 
       // setState(() {
@@ -43,6 +44,12 @@ class _AddChildScreenState extends State<AddChildScreen> {
        return null;  
     }
   }
+
+  List<ChildInfo> decodeItems(String download) {
+    final List<dynamic> jsonList = jsonDecode(download);
+    return jsonList.map((json) => ChildInfo.fromJson(json)).toList();
+  }
+
 
   void saveChild(){
     info.birthDate = _childBirthday;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:muac_tracker/child_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -9,7 +8,7 @@ class SharedPrefs {
   read(String key) async {
     final prefs = await SharedPreferences.getInstance();
     String? stringy = prefs.getString(key);
-    return json.decode(stringy!);
+    return stringy!; 
   }
 
   save(String key, value) async {
@@ -45,7 +44,3 @@ class SharedPrefs {
   //   // prefs.setString('childBirthday', _childBirthday);
 
   // }
-
-
-  
-   
