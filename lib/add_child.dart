@@ -1,67 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:muac_tracker/child_info.dart';
-import 'package:muac_tracker/shared_prefs.dart';
-
 
 class AddChildScreen extends StatefulWidget {
   const AddChildScreen({super.key});
 
   @override
-  _AddChildScreenState createState() => _AddChildScreenState();
+  AddChildScreenState createState() => AddChildScreenState();
 }
 
-class _AddChildScreenState extends State<AddChildScreen> {
-
-  SharedPrefs sharedPref = SharedPrefs();
-
-  List<ChildInfo> kidUpLoad = [];
-  List<ChildInfo>  kidDownload = [];
-
-  ChildInfo info = ChildInfo(); 
-
-  late String _childName;
-  late String _childBirthday;
-
-  @override
-  void initState() {
-    super.initState();
-    loadSharedPrefs();
-  }
-
-  loadSharedPrefs() async {
-    try {
-      String? download = sharedPref.read("kids");
-      kidDownload = decodeItems(download!);
-
-
-      // kidDownload = Kids.fromJson(await sharedPref.read("kids")) as Kids;
-
-      // setState(() {
-
-      // });
-    } catch (Excepetion) {
-       return null;  
-    }
-  }
-
-  List<ChildInfo> decodeItems(String download) {
-    final List<dynamic> jsonList = jsonDecode(download);
-    return jsonList.map((json) => ChildInfo.fromJson(json)).toList();
-  }
-
-
-  void saveChild(){
-    info.birthDate = _childBirthday;
-    info.name = _childName;
-
-    kidUpLoad.add(info); 
-
-    List<Map<String, dynamic>> jsonList = kidUpLoad.map((info) => info.toJson()).toList();
-
-    sharedPref.save('kids', jsonList);
-  } 
-
+class AddChildScreenState extends State<AddChildScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -15,4 +15,8 @@ class ChildInfo {
       'birthDate': birthDate,
     };
 
+  @override
+  String toString() {
+    return 'ChildInfo{id: $id, name: $name, birthDate: $birthDate}';
+  }
 }
